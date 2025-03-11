@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "figexport"
+version = "0.2.0"
+description = """
+    A command line tool for automatic export of figures of various formats to PDF/SVG/PNG/JPG files.
+    """
+readme = "README.md"
+authors = [
+    {name = "Houssem Guissouma", email = "houssem.guissouma@gmx.de"},
+]
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+    # Processing SVG files
+    "cairosvg",
+    # HTTP requests for downloading files from the web
+    "requests"
+]
+
+[project.urls]
+Homepage = "https://github.com/HouGui/figexport"
+
+
+[project.optional-dependencies]
+dev = [
+    # Testing
+    "pytest",
+    "pytest-cov",
+    # Packaging and distribution
+    "pyinstaller",
+    "build",
+    "twine"
+]
+
+[project.scripts]
+figexport = "figexport.main:main"

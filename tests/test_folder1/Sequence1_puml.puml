@@ -1,0 +1,8 @@
+@startuml
+participant User
+participant System
+
+User -> System: Send request
+System -> System: Process request
+System -> User: Return response
+@enduml

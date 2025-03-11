@@ -1,0 +1,17 @@
+{
+    "export_relative_dir": "_export",
+    "export_format": "jpg",
+    "plantuml": {
+        "url": "https://sourceforge.net/projects/plantuml/files/plantuml.jar/download",
+        "filename": "plantuml.jar"
+    },
+    "export_mappings": [
+        {
+            "input_relative_path": "test_folder1",
+            "export_relative_dir": "."
+        }
+    ],
+    "skip_paths": [
+        "test_folder1/RectangleX_to_skip.svg"
+    ]
+}

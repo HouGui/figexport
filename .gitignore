@@ -1,0 +1,53 @@
+# Non-source picture files
+*.pdf
+*.png
+*.jpg
+*.jpeg
+
+# Python
+## Virtual environment
+env/
+venv/
+## Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+## Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# LaTeX
+*.log
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+## Build tool auxiliary files:
+*.fdb_latexmk
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
+
+# PlantUML
+plantuml.jar
+*.pu
+
+# Generated test data
+_export
+tests/_temp
+
+*.bkp
+
+*.spec

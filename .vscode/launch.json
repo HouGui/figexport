@@ -1,0 +1,61 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "CLI - config1.json",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/figexport/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "-c", "${workspaceFolder}/tests/config1.json"
+            ],
+            "justMyCode": true
+        },
+        {
+            "name": "[Test] One File Export - SVG",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": [
+                "${workspaceFolder}/tests/one_file_export_test.py::TestFileExport::test_svg_export",
+                "-s"
+            ],
+            "justMyCode": true,
+        },
+        {
+            "name": "[Test] One File Export - PlantUML",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": [
+                "${workspaceFolder}/tests/one_file_export_test.py::TestFileExport::test_puml_export",
+                "-s"
+            ],
+            "justMyCode": true,
+        },
+        {
+            "name": "[Test] One File Export - draw.io",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": [
+                "${workspaceFolder}/tests/one_file_export_test.py::TestFileExport::test_drawio_export",
+                "-s"
+            ],
+            "justMyCode": true,
+        },
+        {
+            "name": "[Test] One File Export - TikZ",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": [
+                "${workspaceFolder}/tests/one_file_export_test.py::TestFileExport::test_tikz_export",
+                "-s"
+            ],
+            "justMyCode": true,
+        }
+    ]
+}
