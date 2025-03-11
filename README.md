@@ -7,10 +7,10 @@
 - [Installation](#installation)
   - [Install using Pre-built Executable](#install-using-pre-built-executable)
   - [Install from Source](#install-from-source)
-  - [Generate Executable for Distribution](#generate-executable-for-distribution)
-- [Configuration File Example](#configuration-file-example)
+- [Generate PyInstaller Executable](#generate-pyinstaller-executable)
+- [Usage](#usage)
+  - [Configuration File Example](#configuration-file-example)
 - [License](#license)
-
 
 
 ## Supported Input Formats
@@ -25,13 +25,12 @@ Currently, `FigExport` supports the following formats of input files:
 
 ## Installation
 ### Install using Pip
-To install the latest version of `FigExport` from the Python Package Index (PyPI):
 ```sh
 pip install figexport
 ```
 
 ### Install Pre-built Executable
-A self-contained package is available on a the [Releases page]().
+A self-contained package is available on a the [Releases page](https://github.com/HouGui/figexport/releases).
 To install a specific executable version:
 1. Download the zip file of the version you want to use.
 2. Extract the downloaded file.
@@ -57,9 +56,9 @@ pip install .
 If you want to install in editable mode, add `-e` before the `.`, and if you want to install the package with 
 the development dependencies, add `[dev]` after the `.`.
 
-## Generate Executable for Distribution
+## Generate PyInstaller Executable
 > **Note:**
-> This step requires installing REMAIN from source before (see [section](#install-from-source) above).
+> This step requires installing `FigExport` from source before (see [section](#install-from-source) above).
 
 We use `PyInstaller` to generate a self-contained Windows executable for simple distribution:
 ```sh
@@ -67,7 +66,7 @@ cd src/figexport
 pyinstaller main.py --name figexport
 ```
 
-# Configuration File Example
+### Configuration File Example
 `figexport_config.json`:
 ```json
 {
@@ -93,6 +92,9 @@ pyinstaller main.py --name figexport
     ]
 }
 ```
+
+### Command Line Arguments
+To be continued...
 
 ## License
 You are free to use, modify, and distribute this software under the terms of the [MIT License](LICENSE).
