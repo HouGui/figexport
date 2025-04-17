@@ -1,7 +1,6 @@
 # FigExport
-`FigExport` is a package for automatic export of figures of various formats to `PDF`, 
-`SVG`, `PNG` or `JPG` files. It uses an export configuration specified in a JSON file and includes
-a command line interface (CLI).
+`FigExport` is a package for automatic export of figures of various formats to `PDF`, `SVG`, `PNG` 
+or `JPG` files. It uses a JSON export configuration and includes a command line interface (CLI).
 
 **List of Contents:**
 - [Supported Input Formats](#supported-input-formats)
