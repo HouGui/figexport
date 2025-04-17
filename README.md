@@ -1,35 +1,37 @@
 # FigExport
 `FigExport` is a package for automatic export of figures of various formats to `PDF`, `SVG`, `PNG` 
-or `JPG` files. It uses a JSON export configuration and includes a command line interface (CLI).
+or `JPG` files. It uses a JSON export configuration and includes a user-friendly command line interface (CLI).
 
 **List of Contents:**
-- [Supported Input Formats](#supported-input-formats)
+- [Input File Formats](#input-file-formats)
 - [Installation](#installation)
-  - [Install using Pre-built Executable](#install-using-pre-built-executable)
-  - [Install from Source](#install-from-source)
-- [Generate PyInstaller Executable](#generate-pyinstaller-executable)
+  - [Using Pip](#using-pip)
+  - [Using Pre-built Executable](#using-pre-built-executable)
 - [Usage](#usage)
   - [Configuration File Example](#configuration-file-example)
+- [Developer Section](#developer-section)
+  - [Install from Source](#install-from-source)
+  - [Generate PyInstaller Executable](#generate-pyinstaller-executable)
 - [License](#license)
 
 
-## Supported Input Formats
-Currently, `FigExport` supports the following formats of input files:
-* `.svg`: Vector Graphics, created, for example, using the tool Inkscape.
-* `.tex`: Tikz figures in LaTeX.
-* `.drawio`: Draw.io diagrams, created using the Draw.io tool.
-* `.puml`: PlantUML diagrams, can be created in VS Code using the PlantUML extension.
+## Input File Formats
+`FigExport` supports the following input files formats:
+* `.svg`: Vector graphic figures
+* `.drawio`: Draw.io diagrams, created using the Draw.io tool
+* `.tex`: LaTeX documents, e.g., containing a TikZ figure (recommended: `\documentclass{standalone}`)
+* `.puml`: PlantUML diagrams
 
 > **Note:** Other input formats in the folder(s) to process will be ignored during the
 > export process.
 
 ## Installation
-### Install using Pip
+### Using Pip
 ```sh
 pip install figexport
 ```
 
-### Install Pre-built Executable
+### Using Pre-built Executable
 A self-contained package is available on a the [Releases page](https://github.com/HouGui/figexport/releases).
 To install a specific executable version:
 1. Download the zip file of the version you want to use.
@@ -38,6 +40,43 @@ To install a specific executable version:
 To start the application from a terminal at any time, add the folder containing the `figexport` executable to
 your system path.
 
+## Usage
+### Configuration File Example
+`figexport_config.json`:
+```json
+{
+    "export_rel_dir": "export",
+    "export_format": "pdf",
+    "export_mappings": [
+        {
+            "input_relative_path": "figures_A",
+            "export_relative_dir": "."
+        },
+        {
+            "input_relative_path": "figures_B",
+            "export_relative_dir": "figures_B"
+        }
+
+    ],
+    "skip_paths": [
+        "figures_A/subfolder_A1"
+    ],
+    "tools": {
+        "drawio": {
+            "path": "C:/Program Files/Draw.io/draw.io.exe",
+        }
+        "plantuml": {
+            "url": "https://sourceforge.net/projects/plantuml/files/plantuml.jar/download",
+            "filename": "plantuml.jar"
+        }
+    }
+}
+```
+
+### Command Line Arguments
+To be continued...
+
+## Developer Section
 ### Install from Source
 > **Note:**
 > To avoid potential dependency conflicts on your system, it is highly recommended to use a 
@@ -56,7 +95,7 @@ pip install .
 If you want to install in editable mode, add `-e` before the `.`, and if you want to install the package with 
 the development dependencies, add `[dev]` after the `.`.
 
-## Generate PyInstaller Executable
+### Generate PyInstaller Executable
 > **Note:**
 > This step requires installing `FigExport` from source before (see [section](#install-from-source) above).
 
@@ -65,36 +104,6 @@ We use `PyInstaller` to generate a self-contained Windows executable for simple 
 cd src/figexport
 pyinstaller main.py --name figexport
 ```
-
-### Configuration File Example
-`figexport_config.json`:
-```json
-{
-    "export_relative_dir": "export",
-    "export_format": "pdf",
-    "plantuml": {
-        "url": "https://sourceforge.net/projects/plantuml/files/plantuml.jar/download",
-        "filename": "plantuml.jar"
-    },
-    "export_mappings": [
-        {
-            "input_relative_path": "figures_A",
-            "export_relative_dir": "."
-        },
-        {
-            "input_relative_path": "figures_B",
-            "export_relative_dir": "figures_B"
-        }
-
-    ],
-    "skip_paths": [
-        "figures_A/subfolder_A1"
-    ]
-}
-```
-
-### Command Line Arguments
-To be continued...
 
 ## License
 You are free to use, modify, and distribute this software under the terms of the [MIT License](LICENSE).
