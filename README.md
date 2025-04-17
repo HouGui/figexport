@@ -23,8 +23,7 @@ It uses a JSON export configuration and includes a user-friendly command line in
 * `.tex`: LaTeX documents, e.g., containing a TikZ figure (recommended: `\documentclass{standalone}`)
 * `.puml`: PlantUML diagrams
 
-> **Note:** Other input formats in the folder(s) to process will be ignored during the
-> export process.
+> **Note:** Other file formats in the input folder(s) will be ignored during the export process.
 
 ## Installation
 ### Using Pip
