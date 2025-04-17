@@ -24,7 +24,6 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/HouGui/figexport"
 
-
 [project.optional-dependencies]
 dev = [
     # Testing

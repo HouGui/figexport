@@ -79,8 +79,7 @@ To be continued...
 ## Developer Section
 ### Install from Source
 > **Note:**
-> To avoid potential dependency conflicts on your system, it is highly recommended to use a 
-> Python virtual environment.
+> To avoid potential dependency conflicts on your system, it is recommended to use a Python virtual environment.
 
 * Clone this repository and create a Python virtual environment:
 ```sh
@@ -90,10 +89,10 @@ python -m venv env
 
 * Activate the virtual environment, then install the package and its dependencies using `pip`:
 ```sh
-pip install .
+pip install -e .[dev]
 ```
-If you want to install in editable mode, add `-e` before the `.`, and if you want to install the package with 
-the development dependencies, add `[dev]` after the `.`.
+`-e` installs the package in editable mode, and `[dev]` includes the development dependencies
+in the installation.
 
 ### Generate PyInstaller Executable
 > **Note:**
