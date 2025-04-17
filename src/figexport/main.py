@@ -15,12 +15,13 @@ def parse_args() -> argparse.Namespace:
 
     parser.add_argument(
         "-c", "--config", type=Path, default=DEFAULT_CONFIG_FILE,
-        help="Path to the configuration JSON file."
+        help="Path to the configuration JSON file. Default: \"figexport_config.json\""
     )
 
     parser.add_argument(
         "-f", "--format", type=str, default=None,
         help="Format of the exported figures: pdf, svg, png, jpg."
+             " Default: value in config file, or \"pdf\" if not specified."
     )
 
     parser.add_argument(

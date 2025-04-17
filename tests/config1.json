@@ -1,17 +1,22 @@
 {
-    "export_relative_dir": "_export",
+    "export_dir": "_export",
     "export_format": "jpg",
-    "plantuml": {
-        "url": "https://sourceforge.net/projects/plantuml/files/plantuml.jar/download",
-        "filename": "plantuml.jar"
-    },
-    "export_mappings": [
+    "directory_mappings": [
         {
-            "input_relative_path": "test_folder1",
+            "source_dir": "test_folder1",
             "export_relative_dir": "."
         }
     ],
-    "skip_paths": [
+    "excluded_paths": [
         "test_folder1/RectangleX_to_skip.svg"
-    ]
+    ],
+    "tools": {
+        "drawio": {
+            "exe_path": "C:/Program Files/Draw.io/draw.io.exe",
+        },
+        "plantuml": {
+            "download_url": "https://sourceforge.net/projects/plantuml/files/plantuml.jar/download",
+            "jar_name": "plantuml.jar"
+        }
+    }
 }

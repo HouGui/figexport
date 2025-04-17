@@ -64,7 +64,7 @@ your system path.
     "tools": {
         "drawio": {
             "path": "C:/Program Files/Draw.io/draw.io.exe",
-        }
+        },
         "plantuml": {
             "url": "https://sourceforge.net/projects/plantuml/files/plantuml.jar/download",
             "filename": "plantuml.jar"
@@ -91,8 +91,7 @@ python -m venv env
 ```sh
 pip install -e .[dev]
 ```
-`-e` installs the package in editable mode, and `[dev]` includes the development dependencies
-in the installation.
+`-e` installs the package in editable mode, and `[dev]` includes the dev dependencies in the installation.
 
 ### Generate PyInstaller Executable
 > **Note:**
