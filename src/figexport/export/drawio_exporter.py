@@ -1,5 +1,5 @@
-import subprocess
 from pathlib import Path
+import subprocess
 import xml.etree.ElementTree as ET
 
 from figexport.export.fig_exporter import FigExporter
@@ -7,9 +7,9 @@ from figexport.export.enums import ExportFormat
 
 
 class DrawioExporter(FigExporter):
-    def __init__(self, 
-                 export_format: ExportFormat = ExportFormat.PDF,
-                 drawio_path = "C:\\Program Files\\draw.io\\draw.io.exe"):
+    def __init__(self,
+                 drawio_path: Path,
+                 export_format: ExportFormat = ExportFormat.PDF):
         """Initializes the Draw.io exporter.
 
         Args:
@@ -17,7 +17,7 @@ class DrawioExporter(FigExporter):
             drawio_path: The path to the Draw.io executable, or the command if in PATH.
         """
         super().__init__(export_format)
-        self.drawio_path = Path(drawio_path)
+        self.drawio_path = drawio_path
 
     def is_drawio_installed(self) -> bool:
         """Check if Draw.io is installed by checking its version."""
@@ -75,11 +75,19 @@ class DrawioExporter(FigExporter):
             return ["Page_0"]  # Default to "Page_0" if parsing fails
 
     def _run_drawio(self, input_file: str, output_file: str, page: int, format: str) -> None:
-        """Executes the Draw.io command to export the file."""
+        """Executes the Draw.io command to export the file on Windows, Linux, and macOS.
+        
+        Args:
+            input_file: The path to the input draw.io file.
+            output_file: The path to the output file.
+            page: The index of the page to export.
+            format: The format to export to (e.g., "svg", "png", "jpg", "pdf").
+        """     
         command = [
             str(self.drawio_path), "--export", "--format", format,
             "--output", output_file, "--crop", "--page-index", str(page), input_file
         ]
+        
         subprocess.run(command, check=True, stdout=subprocess.PIPE)
     
     ### Required Abstract Methods ###

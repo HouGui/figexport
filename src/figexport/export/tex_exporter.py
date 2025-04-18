@@ -5,12 +5,10 @@ import subprocess
 from figexport.export.enums import ExportFormat
 from figexport.export.fig_exporter import FigExporter
 from figexport.export.svg_exporter import SvgExporter
-from figexport.export.tex_constants import TEX_HEADER, TEX_COLORS, \
-                                           TEX_BEGIN_DOCUMENT, TEX_END_DOCUMENT
-from figexport.utils import get_output_file
+from figexport.utils import get_output_file, copy_file
 
 
-class TikzExporter(FigExporter):
+class TexExporter(FigExporter):
     """Class for exporting TikZ images to different formats.
     """
     def __init__(self, export_format: ExportFormat = ExportFormat.PDF):
@@ -21,25 +19,23 @@ class TikzExporter(FigExporter):
     def _to_pdf(self, input_file: Path, output_dir: Path, suffix: str = "") -> str:
         output_path = get_output_file(input_file, output_dir, 
                                       ExportFormat.PDF, suffix)
-        tex_file_path = str(output_dir / f"{input_file.stem}{suffix}.tex")
-
         # Generate the .tex file including the TikZ code, and compile it
-        self._generate_tex_document(input_file, tex_file_path)
-        self._compile_document(tex_file_path, str(output_dir))
+        self._compile_document(input_file, str(output_dir))
         
         # Clean-up auxiliary files and the generated .tex file
         self._cleanup_aux_files(output_path)
-        os.remove(tex_file_path)
+        #os.remove(tex_file_path)
 
         return output_path
 
     def _to_svg(self, input_file: Path, output_dir: Path, suffix: str = "") -> str:
+        """Export a Tex file to SVG format."""
         output_path = get_output_file(input_file, output_dir, ExportFormat.SVG, suffix)
         tex_file_path = str(output_dir / f"{input_file.stem}{suffix}.tex")
         dvi_temp_file = str(output_dir / f"{input_file.stem}{suffix}.dvi")
 
-        # Generate the .tex file including the TikZ code, and compile it
-        self._generate_tex_document(input_file, tex_file_path)
+        # Copy the .tex file and compile it
+        copy_file(str(input_file), tex_file_path)
         self._compile_document(tex_file_path, str(output_dir), True)
         
         # Convert the DVI file to SVG
@@ -115,16 +111,3 @@ class TikzExporter(FigExporter):
             aux_file = os.path.splitext(pdf_output_file)[0] + ext
             if os.path.exists(aux_file):
                 os.remove(aux_file)
-
-    def _generate_tex_document(self, input_tikz_file: str, target_tex_file: str):
-        '''Generates a LaTeX document with the TikZ code.
-
-        Args:
-            input_tikz_file: The path to the input TikZ file.
-        '''
-        with open(input_tikz_file, 'r') as tikz_file:
-            tikz_code = tikz_file.read()
-        tex_content = TEX_HEADER + TEX_COLORS + TEX_BEGIN_DOCUMENT + \
-                      tikz_code + TEX_END_DOCUMENT
-        with open(target_tex_file, 'w') as tex_file:
-            tex_file.write(tex_content)

@@ -6,7 +6,7 @@ from figexport.config import ExportConfig
 from figexport.export.drawio_exporter import DrawioExporter
 from figexport.export.puml_exporter import PumlExporter
 from figexport.export.svg_exporter import SvgExporter
-from figexport.export.tikz_exporter import TikzExporter
+from figexport.export.tex_exporter import TexExporter
 
 
 # Configure logging
@@ -34,8 +34,8 @@ class ExportManager:
 
         # Initialize the different exporter objects
         self.svg_exporter = SvgExporter(config.export_format)
-        self.latex_builder = TikzExporter(config.export_format)
-        self.drawio_exporter = DrawioExporter(config.export_format)
+        self.drawio_exporter = DrawioExporter(config.drawio_path, config.export_format)
+        self.latex_builder = TexExporter(config.export_format)
         self.puml_exporter = PumlExporter(config.plantuml_path, config.plantuml_url,
                                           config.export_format)
 

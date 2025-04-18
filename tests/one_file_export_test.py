@@ -6,7 +6,7 @@ from figexport.export.enums import ExportFormat
 from figexport.export.drawio_exporter import DrawioExporter
 from figexport.export.puml_exporter import PumlExporter
 from figexport.export.svg_exporter import SvgExporter
-from figexport.export.tikz_exporter import TikzExporter
+from figexport.export.tex_exporter import TexExporter
 from test_helpers import is_valid_file
 
 
@@ -99,7 +99,7 @@ class TestFileExport:
         tikz_figure_path = os.path.join(test_dir, "test_folder1", "Rectangle1_tikz.tex")
 
         # Convert the input Drawio file
-        tikz_exporter = TikzExporter(export_format)
+        tikz_exporter = TexExporter(export_format)
         output_file = tikz_exporter.export(tikz_figure_path, test_export_dir)
 
         # Assert that the exported file is valid
