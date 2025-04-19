@@ -6,10 +6,9 @@ It uses a JSON export configuration and includes a user-friendly command line in
 **List of Contents:**
 - [Input File Formats](#input-file-formats)
 - [Installation](#installation)
-  - [Using Pip](#using-pip)
-  - [Using Pre-built Executable](#using-pre-built-executable)
 - [Usage](#usage)
   - [Configuration File Example](#configuration-file-example)
+  - [Command Line Arguments](#command-line-arguments)
 - [Developer Section](#developer-section)
   - [Install from Source](#install-from-source)
   - [Generate PyInstaller Executable](#generate-pyinstaller-executable)
@@ -26,19 +25,9 @@ It uses a JSON export configuration and includes a user-friendly command line in
 > **Note:** Other file formats in the input folder(s) will be ignored during the export process.
 
 ## Installation
-### Using Pip
 ```sh
 pip install figexport
 ```
-
-### Using Pre-built Executable
-A self-contained package is available on a the [Releases page](https://github.com/HouGui/figexport/releases).
-To install a specific executable version:
-1. Download the zip file of the version you want to use.
-2. Extract the downloaded file.
-
-To start the application from a terminal at any time, add the folder containing the `figexport` executable to
-your system path.
 
 ## Usage
 ### Configuration File Example
