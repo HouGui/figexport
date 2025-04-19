@@ -11,7 +11,7 @@ from figexport.utils import get_output_file
 
 
 class PumlExporter(FigExporter):
-    def __init__(self, jar_path: str, plantuml_url: str, 
+    def __init__(self, jar_path: str, plantuml_url: str,
                  export_format: ExportFormat = ExportFormat.PDF):
         """Initializes the PlantUML exporter.
 
@@ -46,18 +46,18 @@ class PumlExporter(FigExporter):
 
     def _get_file_stem(self, file_path: str) -> str:
         """Returns the filename without extension.
-        
+
         Args:
             file_path: The path of the file.
         """
         return Path(file_path).stem
 
-    def _run_plantuml(self, 
-                      input_file: str, 
-                      output_format: str, 
+    def _run_plantuml(self,
+                      input_file: str,
+                      output_format: str,
                       output_dir: str) -> None:
         """Executes the PlantUML JAR with the given input file and format.
-        
+
         Args:
             input_file: The path to the input PUML file.
             output_format: The output format (e.g., "svg", "png").
@@ -65,7 +65,7 @@ class PumlExporter(FigExporter):
         """
         command = ["java", "-jar", str(self.jar_path), f"-t{output_format}",
                    input_file, "-charset", "UTF-8", "-o", output_dir]
-        
+
         try:
             subprocess.run(command, check=True, stdout=subprocess.PIPE)
         except subprocess.CalledProcessError as e:
@@ -97,7 +97,7 @@ class PumlExporter(FigExporter):
 
     def _to_png(self, input_file: Path, output_dir: Path, suffix: str = "") -> str:
         output_file = get_output_file(input_file, output_dir, ExportFormat.PNG, suffix)
-        
+
         # If suffix is provided, generate in a __temp folder
         if suffix:
             temp_dir = output_dir / "__puml_temp"

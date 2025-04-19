@@ -17,14 +17,13 @@ class TexExporter(FigExporter):
         self.svg_exporter = SvgExporter(self.format)
 
     def _to_pdf(self, input_file: Path, output_dir: Path, suffix: str = "") -> str:
-        output_path = get_output_file(input_file, output_dir, 
+        output_path = get_output_file(input_file, output_dir,
                                       ExportFormat.PDF, suffix)
         # Generate the .tex file including the TikZ code, and compile it
         self._compile_document(input_file, str(output_dir))
-        
+
         # Clean-up auxiliary files and the generated .tex file
         self._cleanup_aux_files(output_path)
-        #os.remove(tex_file_path)
 
         return output_path
 
@@ -37,9 +36,9 @@ class TexExporter(FigExporter):
         # Copy the .tex file and compile it
         copy_file(str(input_file), tex_file_path)
         self._compile_document(tex_file_path, str(output_dir), True)
-        
+
         # Convert the DVI file to SVG
-        try: 
+        try:
             subprocess.run(['dvisvgm', '-o', output_path, dvi_temp_file],
                            check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         except subprocess.CalledProcessError as e:
@@ -106,7 +105,7 @@ class TexExporter(FigExporter):
             pdf_output_file: The path of the output pdf file.
         '''
         aux_extensions = ['.aux', '.log', '.out', '.toc']
-        
+
         for ext in aux_extensions:
             aux_file = os.path.splitext(pdf_output_file)[0] + ext
             if os.path.exists(aux_file):

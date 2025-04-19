@@ -19,7 +19,7 @@ class ExportManager:
     Attributes:
         config (ExportConfig): Export configuration object.
         selected_dir (str): The selected directory to export the figures from.
-        latex_builder (LatexBuilder): Specialized worker object for processing 
+        latex_builder (LatexBuilder): Specialized worker object for processing
                                       .tex files.
         drawio_exporter (DrawioExporter): Specialized worker object for processing
                                           .drawio files.
@@ -30,7 +30,7 @@ class ExportManager:
         Args:
             config: The ExportConfig object containing the configuration settings.
         """
-        self.config : ExportConfig = config
+        self.config: ExportConfig = config
 
         # Initialize the different exporter objects
         self.svg_exporter = SvgExporter(config.export_format)
@@ -59,7 +59,7 @@ class ExportManager:
             else:
                 raise RuntimeError(f"Input path '{input_path}' is neither "
                                    "a file, nor a directory.")
-            
+
     def process_input_dir(self, input_path: Path, export_path: Path,
                           rel_path: Path = Path()) -> None:
         """Processes the input directory and exports the figures.

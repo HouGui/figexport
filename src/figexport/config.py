@@ -11,12 +11,12 @@ class ExportConfig:
                          (where the JSON file is located).
         export_dir (Path): The directory where the figures will be exported.
         export_format (ExportFormat): The format to export the figures to.
-        export_mappings list[dict]: List of dictionaries containing the 
+        export_mappings list[dict]: List of dictionaries containing the
                                     specified input and export directories.
         plantuml_url (str): The URL to download the PlantUML jar file.
         plantuml_path (Path): The path to the PlantUML jar file.
     """
-    def __init__(self, config_dict: dict, base_dir_path: Path, input_path: Path|None):
+    def __init__(self, config_dict: dict, base_dir_path: Path, input_path: Path | None):
         """Initializes the ExportConfig object using the given JSON file.
 
         Args:
@@ -58,22 +58,23 @@ class ExportConfig:
             mappings: The JSON content loaded from the configuration file.
         """
         if input_path:
-            self.export_mappings = [{'input_path': input_path, 
+            self.export_mappings = [{'input_path': input_path,
                                      'export_dir': self.export_dir}]
         else:
             if not mappings:
                 raise ValueError("No input paths found in the configuration file.")
-            
+
             # Set the input paths based on the 'input_paths' node in the JSON file
             self.export_mappings = [
-                { 'input_path': self.base_dir / mapping['source'], 
-                  'export_dir': self.export_dir / mapping['target']
+                {
+                    'input_path': self.base_dir / mapping['source'],
+                    'export_dir': self.export_dir / mapping['target']
                 } for mapping in mappings
-            ] 
+            ]
 
         if not self.export_mappings:
             raise ValueError("No export mappings found in the configuration file.")
-        
+
     def set_skip_paths(self, skip_paths: list) -> None:
         """Sets the paths to skip during the export process.
 

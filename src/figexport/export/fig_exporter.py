@@ -28,9 +28,9 @@ class FigExporter(ABC):
         Args:
             input_file: The path of the input file.
             output_dir: The path of the output directory.
-        """     
+        """
         self._validate_paths(input_file, output_dir)
-        
+
         try:
             if self.format == ExportFormat.PDF:
                 return self._to_pdf(input_file, output_dir)
@@ -47,9 +47,9 @@ class FigExporter(ABC):
         except Exception as e:
             print(f"Error during conversion: {e}")
             return None
-        
+
     def _validate_paths(self, input_file: Path, output_dir: Path) -> Path:
-        """Validates the input and output paths and creates the output folder, if necessary.
+        """Validates the input file and output directory paths.
 
         Args:
             input_file: The path of the input file.
@@ -57,9 +57,8 @@ class FigExporter(ABC):
         """
         if not input_file.exists():
             raise FileNotFoundError(f"Input file '{input_file}' not found.")
-        
         output_dir.mkdir(parents=True, exist_ok=True)
-        
+
     @abstractmethod
     def _to_pdf(self, input_file: Path, output_dir: Path, suffix: str = "") -> str:
         """Converts the input file to a PDF file in the given output directory.

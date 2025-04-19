@@ -4,7 +4,7 @@ from pathlib import Path
 from figexport.export.enums import ExportFormat
 
 
-def get_output_file(input_file: Path, output_folder: Path, 
+def get_output_file(input_file: Path, output_folder: Path,
                     format: ExportFormat, suffix: str = "") -> str:
     """Gets the output file path without extension.
 

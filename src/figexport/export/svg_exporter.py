@@ -12,7 +12,7 @@ from figexport.utils import get_output_file, copy_file
 class SvgExporter(FigExporter):
     def __init__(self, export_format: ExportFormat = ExportFormat.PDF):
         """Initializes the SVG exporter.
-        
+
         Args:
             export_format: The image format to export.
         """
@@ -24,7 +24,7 @@ class SvgExporter(FigExporter):
 
         cairosvg.svg2pdf(url=str(input_file), write_to=output_file)
         return str(output_file)
-    
+
     def _to_svg(self, input_file: Path, output_folder: Path, suffix: str = "") -> str:
         output_file = get_output_file(input_file, output_folder, ExportFormat.SVG, suffix)
         copy_file(str(input_file), output_file)
@@ -35,16 +35,15 @@ class SvgExporter(FigExporter):
         cairosvg.svg2png(url=str(input_file), write_to=output_file)
         return output_file
 
-
     def _to_jpg(self, input_file: Path, output_folder: Path, suffix: str = "") -> str:
         output_file = get_output_file(input_file, output_folder, ExportFormat.JPG, suffix)
 
         # Path of temporary intermediate PNG file
         temp_png_path = str(output_folder / f"{input_file.stem}__temp.png")
-        
+
         cairosvg.svg2png(url=str(input_file), write_to=temp_png_path)
         img = Image.open(temp_png_path)
         img.convert("RGB").save(output_file, "JPEG")
         os.remove(temp_png_path)
-        
+
         return output_file

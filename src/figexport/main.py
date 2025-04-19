@@ -12,10 +12,10 @@ DEFAULT_CONFIG_FILE = Path("figexport_config.json")
 
 def parse_config_file(config_file: Path, args: argparse.Namespace) -> dict:
     """Parses the configuration file and returns its content as a dictionary.
-    
+
     Args:
         config_file: Path to the configuration file.
-        args: Parsed command-line arguments, potentially containing 
+        args: Parsed command-line arguments, potentially containing
               override values.
     """
     if not config_file.exists():
@@ -50,27 +50,27 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
-        "path", nargs="?", type=Path, default=None, 
-         help="Path to a file or folder to export. If not provided, "
-              "the path(s) from the configuration file will be used."
+        "path", nargs="?", type=Path, default=None,
+        help="Path to a file or folder to export. If not provided, "
+             "the path(s) from the configuration file will be used."
     )
-    
+
     return parser.parse_args()
 
 
 def main():
     """Main function of the figexport command line tool."""
     args = parse_args()
-    
+
     # Get the absolute path of the config file and the input path
     config_file_path = args.config.resolve()
     input_path = args.path.resolve() if args.path else None
-    
+
     # Create the export configuration object
     config_dict = parse_config_file(config_file_path, args)
     config = ExportConfig(config_dict, config_file_path.parent, input_path)
-    
-    # Initialize the export manager and run it 
+
+    # Initialize the export manager and run it
     pdf_exporter = ExportManager(config)
     pdf_exporter.run()
 
