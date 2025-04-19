@@ -84,11 +84,11 @@ figexport [-h] [-c CONFIG] [-f FORMAT] [path]
 
 * Options:
 
-| Option                     | Description                      |
-|----------------------------|----------------------------------|
-|-h, --help                  | show this help message and exit  |
-| -c CONFIG --config CONFIG  | Path to the configuration JSON file. Default: "figexport_config.json" |
-| -f FORMAT, --format FORMAT | Format of the exported figures: pdf, svg, png, jpg. Default: value in config file, or "pdf" if not specified. |
+| Option             | Description                     |
+|--------------------|---------------------------------|
+|-h, --help          | Show the help message and exit  |
+| -c/--config CONFIG | Path to the configuration JSON file. Default: "figexport_config.json" |
+| -f/--format FORMAT | Format of the exported figures: pdf, svg, png, jpg. Default: value in config file, or "pdf" if not specified. |
 
 ## Developer Section
 ### Install from Source
