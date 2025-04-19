@@ -25,17 +25,6 @@
             "justMyCode": true,
         },
         {
-            "name": "[Test] One File Export - PlantUML",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "pytest",
-            "args": [
-                "${workspaceFolder}/tests/one_file_export_test.py::TestFileExport::test_puml_export",
-                "-s"
-            ],
-            "justMyCode": true,
-        },
-        {
             "name": "[Test] One File Export - draw.io",
             "type": "debugpy",
             "request": "launch",
@@ -53,6 +42,17 @@
             "module": "pytest",
             "args": [
                 "${workspaceFolder}/tests/one_file_export_test.py::TestFileExport::test_tikz_export",
+                "-s"
+            ],
+            "justMyCode": true,
+        },
+        {
+            "name": "[Test] One File Export - PlantUML",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": [
+                "${workspaceFolder}/tests/one_file_export_test.py::TestFileExport::test_puml_export",
                 "-s"
             ],
             "justMyCode": true,
