@@ -45,37 +45,50 @@ your system path.
 `figexport_config.json`:
 ```json
 {
-    "export_rel_dir": "export",
+    "export_dir": "export",
     "export_format": "pdf",
-    "export_mappings": [
+    "directory_mappings": [
         {
-            "input_relative_path": "figures_A",
-            "export_relative_dir": "."
+            "source": "figures_A",
+            "target": "."
         },
         {
-            "input_relative_path": "figures_B",
-            "export_relative_dir": "figures_B"
+            "source": "figures_B",
+            "target": "figures_B"
         }
 
     ],
-    "skip_paths": [
+    "excluded_paths": [
         "figures_A/subfolder_A1"
     ],
     "tools": {
         "drawio": {
-            "path": "C:/Program Files/Draw.io/draw.io.exe",
+            "exe_path": "C:/Program Files/Draw.io/draw.io.exe",
         },
         "plantuml": {
-            "url": "https://sourceforge.net/projects/plantuml/files/plantuml.jar/download",
-            "filename": "plantuml.jar"
+            "download_url": "https://github.com/plantuml/plantuml/releases/download/v1.2025.2/plantuml-1.2025.2.jar",
+            "jar_name": "plantuml.jar"
         }
     }
 }
 ```
 
 ### Command Line Arguments
-To be continued...
+* CLI usage: 
+```bash
+figexport [-h] [-c CONFIG] [-f FORMAT] [path]
+```
+* Positional arguments:
+  path                  Path to a file or folder to export. If not provided, the path(s) from the
+                        configuration file will be used.
 
+* Options:
+  -h, --help            show this help message and exit
+  -c CONFIG, --config CONFIG
+                        Path to the configuration JSON file. Default: "figexport_config.json"
+  -f FORMAT, --format FORMAT
+                        Format of the exported figures: pdf, svg, png, jpg. Default: value in config file,  
+                        or "pdf" if not specified.
 ## Developer Section
 ### Install from Source
 > **Note:**
