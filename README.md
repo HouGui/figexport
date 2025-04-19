@@ -16,7 +16,7 @@ It uses a JSON export configuration and includes a user-friendly command line in
 
 
 ## Input File Formats
-`FigExport` supports the following input files formats:
+`FigExport` supports the following input file formats:
 * `.svg`: Vector graphic figures
 * `.drawio`: Draw.io diagrams, created using the [Draw.io](https://www.drawio.com/) tool
 * `.tex`: LaTeX documents, e.g., containing a TikZ figure (recommended: `\documentclass{standalone}`)
