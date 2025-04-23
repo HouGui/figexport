@@ -68,9 +68,9 @@ class TestFileExport:
     @pytest.mark.parametrize("export_format",
                              [ExportFormat.PDF, ExportFormat.SVG,
                               ExportFormat.PNG, ExportFormat.JPG])
-    def test_tikz_export(self, 
-                         test_dir: Path, 
-                         test_export_dir: Path, export_format: ExportFormat) -> None:
+    def test_tex_export(self, 
+                        test_dir: Path, 
+                        test_export_dir: Path, export_format: ExportFormat) -> None:
         """Tests the conversion of a TikZ file to an SVG file.
 
         Args:
@@ -80,8 +80,8 @@ class TestFileExport:
         tikz_figure_path = test_dir / "test_folder1" / "Rectangle1_tex.tex"
 
         # Convert the input Drawio file
-        tikz_exporter = TexExporter(export_format)
-        output_file = tikz_exporter.export(tikz_figure_path, test_export_dir)
+        tex_exporter = TexExporter(export_format)
+        output_file = tex_exporter.export(tikz_figure_path, test_export_dir)
 
         # Assert that the exported file is valid
         assert is_valid_file(output_file, export_format.value), \

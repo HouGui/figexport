@@ -35,6 +35,9 @@ jobs:
         wget https://github.com/jgraph/drawio-desktop/releases/download/v26.2.2/drawio-amd64-26.2.2.deb
         sudo dpkg -i drawio-amd64-26.2.2.deb || true
         sudo apt-get install -f -y  # Install all missing dependencies
+
+        # Install LaTeX
+        sudo apt-get install texlive
     
     - name: Install Python package
       run: |
