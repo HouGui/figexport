@@ -44,7 +44,13 @@ class ExportConfig:
         Args:
             export_dir: The directory where the PDF files will be exported.
         """
-        rel_export_dir = config_dict.get('export_dir', "_export")
+        #  Check if the key 'export_dir' is present
+        if 'export_dir' in config_dict:
+            rel_export_dir = config_dict['export_dir']
+        else:
+            rel_export_dir = '_export'
+            print(f"'export_dir' parameter not specified."
+                  f" Default value '{rel_export_dir}' is used.")
 
         if rel_export_dir == ".":
             self.export_dir = self.base_dir

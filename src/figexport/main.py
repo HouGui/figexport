@@ -6,12 +6,10 @@ from figexport.config import ExportConfig
 from figexport.export_manager import ExportManager
 
 
-# Path of default config file: <cwd>/figexport_config.json
-DEFAULT_CONFIG_FILE = Path("figexport_config.json")
-
-
-def parse_config_file(config_file: Path, args: argparse.Namespace) -> dict:
+def get_config_dict(config_file: Path, args: argparse.Namespace) -> dict:
     """Parses the configuration file and returns its content as a dictionary.
+
+    If the configuration file does not exist, an empty dictionary is returned.
 
     Args:
         config_file: Path to the configuration file.
@@ -19,7 +17,8 @@ def parse_config_file(config_file: Path, args: argparse.Namespace) -> dict:
               override values.
     """
     if not config_file.exists():
-        raise FileNotFoundError(f"Config file '{config_file}' not found.")
+        print(f"Config file '{config_file}' not found.")
+        return {}
 
     try:
         with open(config_file, "r") as f:
@@ -39,7 +38,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Export figures.")
 
     parser.add_argument(
-        "-c", "--config", type=Path, default=DEFAULT_CONFIG_FILE,
+        "-c", "--config", type=Path, default=Path("figexport_config.json"),
         help="Path to the configuration JSON file. Default: \"figexport_config.json\""
     )
 
@@ -67,7 +66,7 @@ def main():
     input_path = args.path.resolve() if args.path else None
 
     # Create the export configuration object
-    config_dict = parse_config_file(config_file_path, args)
+    config_dict = get_config_dict(config_file_path, args)
     config = ExportConfig(config_dict, config_file_path.parent, input_path)
 
     # Initialize the export manager and run it
