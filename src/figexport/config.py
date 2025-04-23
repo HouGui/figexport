@@ -25,7 +25,7 @@ class ExportConfig:
                             the default directory(ies) in the config file.
         """
         self.base_dir = base_dir_path
-        self.set_export_dir(config_dict['export_dir'])
+        self.set_export_dir(config_dict)
 
         # Set the export format (default is PDF)
         if 'export_format' in config_dict:
@@ -39,11 +39,13 @@ class ExportConfig:
 
         self.set_tools_config(config_dict['tools'])
 
-    def set_export_dir(self, rel_export_dir: str) -> str:
+    def set_export_dir(self, config_dict: dict) -> str:
         """Sets the full path of the export directory based on the relative path.
         Args:
             export_dir: The directory where the PDF files will be exported.
         """
+        rel_export_dir = config_dict.get('export_dir', "_export")
+
         if rel_export_dir == ".":
             self.export_dir = self.base_dir
         else:

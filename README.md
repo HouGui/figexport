@@ -29,6 +29,25 @@ pip install figexport
 ```
 
 ## Usage
+In `FigExport`, the main export object (class `ExportManager`) is configured with an `ExportConfig` object,
+which can be initialized by parsing a JSON configuration file.
+If not provided, the setting parameters in `ExportConfig` will be set to their default values.
+
+In the CLI tool, the JSON configuration file can be directly passed to the `ExportManager` class
+using the ``-c/--config`` option.
+
+### Configuration File Parameters
+> **Note:**
+> The path parameters in the configuration file are interpreted as relative to the given the **`root_dir`**,
+> except `directory_mappings/target`, which is interpreted as relative to the export directory.<br>
+> In the CLI tool, the `root_dir` is set to the folder where the configuration file is located, or, if
+> not provided, to the current working directory.
+
+| Parameter          | Description                                             | Default value (if not specified) |
+|--------------------|---------------------------------------------------------|----------------------------------|
+| `export_dir`       | Path to the directory to save the exported figures to.  | `_export`                        |
+| `export_format`    | The file format to export the figures in.               | `pdf`                            |
+
 ### Configuration File Example
 `figexport_config.json`:
 ```json
