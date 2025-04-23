@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "figexport"
 version = "0.2.5"
 description = """
-    A command line tool for automatic export of figures of various formats to PDF/SVG/PNG/JPG files.
+    Automatic export of figures of heterogeneous formats to PDF/SVG/PNG/JPG files.
     """
 readme = "README.md"
 authors = [
