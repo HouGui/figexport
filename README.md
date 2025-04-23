@@ -68,17 +68,17 @@ pip install figexport
 figexport [-h] [-c CONFIG] [-f FORMAT] [path]
 ```
 * Positional arguments:
+
 | Option             | Description                                                           |
 |--------------------|-----------------------------------------------------------------------|
-|-h, --help          | Path to a file or folder to export. If not provided, the path(s)      |
-|                    | from the configuration file will be used.                             |
-  path                  
+| path               | Path to a file or folder to export. If not provided, the path(s) \
+from the configuration file will be used. |                  
 
 * Options:
 
 | Option             | Description                                                           |
 |--------------------|-----------------------------------------------------------------------|
-|-h, --help          | Show the help message and exit                                        |
+| -h, --help         | Show the help message and exit                                        |
 | -c/--config CONFIG | Path to the configuration JSON file. Default: "figexport_config.json" |
 | -f/--format FORMAT | Format of the exported figures: pdf, svg, png, jpg. Default: value in config file, or "pdf" if not specified. |
 
