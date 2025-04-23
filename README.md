@@ -11,7 +11,6 @@ It uses a JSON export configuration and includes a user-friendly command line in
   - [Command Line Arguments](#command-line-arguments)
 - [Developer Section](#developer-section)
   - [Install from Source](#install-from-source)
-  - [Generate PyInstaller Executable](#generate-pyinstaller-executable)
 - [License](#license)
 
 
@@ -69,10 +68,9 @@ figexport [-h] [-c CONFIG] [-f FORMAT] [path]
 ```
 * Positional arguments:
 
-| Option | Description |
-|--------|-------------|
-| path   | Path to a file or folder to export. If not provided, the path(s)
-           from the configuration file will be used. |
+| Option             | Description                                                           |
+|--------------------|-----------------------------------------------------------------------|
+| path               | Path to a file or folder to export. If not provided, the path(s) from the configuration file will be used. |        
 
 * Options:
 
@@ -98,16 +96,6 @@ python -m venv env
 pip install -e .[dev]
 ```
 `-e` installs the package in editable mode, and `[dev]` includes the dev dependencies in the installation.
-
-### Generate PyInstaller Executable
-> **Note:**
-> This step requires installing `FigExport` from source before (see [section](#install-from-source) above).
-
-We use `PyInstaller` to generate a self-contained Windows executable for simple distribution:
-```sh
-cd src/figexport
-pyinstaller main.py --name figexport
-```
 
 ## License
 You are free to use, modify, and distribute this software under the terms of the [MIT License](LICENSE).
