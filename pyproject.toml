@@ -30,7 +30,6 @@ dev = [
     "pytest",
     "pytest-cov",
     # Packaging and distribution
-    "pyinstaller",
     "build",
     "twine"
 ]
