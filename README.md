@@ -69,10 +69,10 @@ figexport [-h] [-c CONFIG] [-f FORMAT] [path]
 ```
 * Positional arguments:
 
-| Option             | Description                                                           |
-|--------------------|-----------------------------------------------------------------------|
-| path               | Path to a file or folder to export. If not provided, the path(s) \
-from the configuration file will be used. |                  
+| Option | Description |
+|--------|-------------|
+| path   | Path to a file or folder to export. If not provided, the path(s)
+           from the configuration file will be used. |
 
 * Options:
 
