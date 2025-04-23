@@ -19,10 +19,8 @@ class TexExporter(FigExporter):
     def _to_pdf(self, input_file: Path, output_dir: Path, suffix: str = "") -> str:
         output_path = get_output_file(input_file, output_dir,
                                       ExportFormat.PDF, suffix)
-        # Generate the .tex file including the TikZ code, and compile it
+        # Compile the .tex file to PDF, then clean up the auxiliary files
         self._compile_document(input_file, str(output_dir))
-
-        # Clean-up auxiliary files and the generated .tex file
         self._cleanup_aux_files(output_path)
 
         return output_path
@@ -92,7 +90,8 @@ class TexExporter(FigExporter):
             command.append('-output-format=dvi')
         try:
             subprocess.run(command, check=True,
-                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                           stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                           cwd=os.path.dirname(input_file))
         except subprocess.CalledProcessError as e:
             print(f"Error during LaTeX compilation: {e.stderr.decode()}")
         except Exception as e:
