@@ -36,5 +36,7 @@ def drawio_path() -> str:
     # For Windows, you can use the following path:
     if os.name == 'nt':
         return "C:/Program Files/draw.io/draw.io.exe"
+    elif os.name == 'posix':
+        return "/usr/bin/drawio"
     else:
-        return "/snap/bin/drawio"
+        raise RuntimeError("Currently unsupported operating system for draw.io.")
