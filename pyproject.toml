@@ -43,7 +43,7 @@ test = ["pytest>=9.2.0,<10", "pytest-cov>=7.1.0,<8"]
 docs = ["mkdocs>=1.6.1,<2"]
 dev = [
     "figexport[test,docs]",
-    "ruff>=0.17.3,<0.18",
+    "ruff>=0.17.4,<0.18",
     "build>=1.6.1,<2",
     "twine>=7.0.0,<8",
 ]
