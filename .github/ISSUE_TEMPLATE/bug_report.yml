@@ -1,0 +1,17 @@
+name: Bug report
+description: Report an export, installation or documentation problem.
+body:
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Command, minimal configuration/source, expected result and actual result.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and error output
+      description: OS, Python and figexport versions; relevant converter versions and stderr. Remove private data.
+    validations:
+      required: true

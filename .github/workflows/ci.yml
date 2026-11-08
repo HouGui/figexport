@@ -1,0 +1,210 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  quality:
+    name: Lint and workflow checks
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+          cache: pip
+      - run: python -m pip install -e '.[dev]'
+      - run: ruff check .
+      - run: ruff format --check .
+      # Pushes and pull requests build docs in docs.yml; releases validate them here.
+      - if: github.event_name == 'release'
+        run: mkdocs build --strict
+      - name: Validate workflow syntax
+        run: |
+          curl --fail --location --retry 3 -o "$RUNNER_TEMP/actionlint.tar.gz" https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          echo '8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  '"$RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP" actionlint
+          "$RUNNER_TEMP/actionlint" -shellcheck=""
+
+  build:
+    name: Build distributions
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+          cache: pip
+      - run: python -m pip install 'build>=1.2,<2' 'twine>=6,<8'
+      # The default build creates a wheel FROM the sdist, checking both distribution forms.
+      - run: python -m build
+      - run: python -m twine check --strict dist/*
+      - name: Validate release version and tag
+        if: github.event_name == 'release'
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: python scripts/check_release.py
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: distributions
+          path: dist/*
+          if-no-files-found: error
+
+  test:
+    name: Python ${{ matrix.python }} / ${{ matrix.os }}
+    needs: build
+    timeout-minutes: 15
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python: ['3.10', '3.11', '3.12', '3.13', '3.14']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install Cairo on Linux
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y libcairo2
+      - name: Install Cairo on macOS
+        if: runner.os == 'macOS'
+        run: |
+          brew install cairo
+          echo "DYLD_FALLBACK_LIBRARY_PATH=$(brew --prefix)/lib" >> "$GITHUB_ENV"
+      - name: Install Cairo on Windows
+        id: msys2
+        if: runner.os == 'Windows'
+        uses: msys2/setup-msys2@ec48f7c5447b3140e2b088413ae3a55687bccb6e # v2.33.0
+        with:
+          msystem: MINGW64
+          install: mingw-w64-x86_64-cairo
+          update: true
+      - name: Expose Cairo DLLs to Python on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        env:
+          MSYS2_LOCATION: ${{ steps.msys2.outputs.msys2-location }}
+        run: |
+          $cairoDir = Join-Path $env:MSYS2_LOCATION 'mingw64\bin'
+          if (-not (Test-Path -LiteralPath (Join-Path $cairoDir 'libcairo-2.dll') -PathType Leaf)) {
+            throw "Cairo DLL was not installed in $cairoDir"
+          }
+          # CFFI needs PATH for DLL discovery as well as CairoCFFI's DLL search directories.
+          $cairoDir | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          "CAIROCFFI_DLL_DIRECTORIES=$cairoDir" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      # Select Python after native setup so it takes precedence over MSYS2's Python on PATH.
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        id: python
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - name: Verify the selected Python interpreter
+        shell: python
+        env:
+          EXPECTED_PYTHON: ${{ steps.python.outputs.python-path }}
+        run: |
+          import os
+          import sys
+
+          expected = os.environ["EXPECTED_PYTHON"]
+          print(f"Using {sys.executable}: {sys.version}")
+          if not os.path.samefile(sys.executable, expected):
+              raise SystemExit(f"Expected the setup-python interpreter at {expected}")
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: distributions
+          path: dist
+      - name: Install the built wheel with test dependencies
+        run: python scripts/install_wheel.py
+      - run: python -m pip check
+      - run: figexport --version
+      - name: Verify Windows Cairo discovery and rendering
+        if: runner.os == 'Windows'
+        shell: python
+        run: |
+          from ctypes.util import find_library
+
+          cairo_dll = find_library("libcairo-2")
+          if not cairo_dll:
+              raise SystemExit("Cairo DLL is not discoverable on PATH")
+          print(f"Cairo DLL: {cairo_dll}", flush=True)
+
+          import cairocffi
+          import cairosvg
+
+          svg = b'<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2"/>'
+          png = cairosvg.svg2png(bytestring=svg)
+          if not png.startswith(b"\x89PNG\r\n\x1a\n"):
+              raise SystemExit("Cairo did not produce a PNG")
+          print(f"Cairo {cairocffi.cairo_version_string()}: SVG to PNG succeeded")
+      - name: Run portable tests, including real SVG conversions
+        run: python -m pytest -m "not integration" --cov --cov-report=xml --junitxml=test-results.xml
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: test-results-${{ matrix.os }}-${{ matrix.python }}
+          path: |
+            test-results.xml
+            coverage.xml
+          if-no-files-found: ignore
+
+  integration:
+    name: Native converters / Linux
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+          cache: pip
+      - name: Install native converters
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y libcairo2 default-jre-headless graphviz texlive-latex-base dvisvgm xvfb xauth
+          curl --fail --location --retry 3 -o "$RUNNER_TEMP/drawio.deb" https://github.com/jgraph/drawio-desktop/releases/download/v32.6.1/drawio-amd64-32.6.1.deb
+          echo '515a975fbdb982e0d736b6f99248dbbb856a8b07bb72d6d3648a54b850fa33db  '"$RUNNER_TEMP/drawio.deb" | sha256sum --check
+          sudo apt-get install --no-install-recommends -y "$RUNNER_TEMP/drawio.deb"
+          # Scope Electron's CI sandbox workaround to this trusted-fixture test wrapper.
+          printf '#!/bin/sh\nexec /usr/bin/drawio --no-sandbox --disable-gpu --ozone-platform=x11 "$@"\n' > "$RUNNER_TEMP/drawio-ci"
+          chmod +x "$RUNNER_TEMP/drawio-ci"
+          echo "FIGEXPORT_DRAWIO=$RUNNER_TEMP/drawio-ci" >> "$GITHUB_ENV"
+          curl --fail --location --retry 3 -o "$RUNNER_TEMP/plantuml.jar" https://github.com/plantuml/plantuml/releases/download/v1.2026.9/plantuml.jar
+          echo 'aa4a1d06f8911c4b842beff4828dd955be431692b631a312d04c0e9fab9581de  '"$RUNNER_TEMP/plantuml.jar" | sha256sum --check
+          echo "FIGEXPORT_PLANTUML_JAR=$RUNNER_TEMP/plantuml.jar" >> "$GITHUB_ENV"
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: distributions
+          path: dist
+      - run: python scripts/install_wheel.py
+      - name: Run every native converter and format
+        env:
+          FIGEXPORT_INTEGRATION: '1'
+        run: xvfb-run -a python -m pytest -m integration --junitxml=integration-results.xml
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: integration-results-linux
+          path: integration-results.xml
+          if-no-files-found: ignore

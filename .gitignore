@@ -1,0 +1,55 @@
+# Python environments, caches and build output
+.venv/
+venv/
+env/
+.tox/
+.nox/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+*.egg-info/
+*.egg
+/build/
+/dist/
+
+# Local export output, downloaded converters and temporary staging
+_export/
+.figexport-*/
+plantuml.jar
+*.part
+/tests/_temp/
+
+# Documentation and test reports
+/site/
+test-results*.xml
+integration-results*.xml
+
+# LaTeX intermediate files (source figures and reference images remain trackable)
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.dvi
+
+# Editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.bkp
+
+# Local credentials
+.env
+.env.*
+!.env.example
+.pypirc

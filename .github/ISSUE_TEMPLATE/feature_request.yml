@@ -1,0 +1,10 @@
+name: Feature request
+description: Suggest an improvement or another converter.
+body:
+  - type: textarea
+    id: use-case
+    attributes:
+      label: What would you like to do?
+      description: Describe the use case, current limitation and a concrete example.
+    validations:
+      required: true
